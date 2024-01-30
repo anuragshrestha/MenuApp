@@ -3,9 +3,13 @@ import { Text, View, StyleSheet } from "react-native";
 import { MEALS } from "../data/dummy-data";
 
 
- function MealsOverViewScreens(){
+ function MealsOverViewScreens({route}){
+
+    const catId = route.params.categoryId;
+
+
     return(
-        <Text>Meals OverView screen!</Text>
+        <Text>Meals OverView screen! {catId}</Text>
     )
  }
 
