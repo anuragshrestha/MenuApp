@@ -9,7 +9,9 @@ function CategoriesScreen({navigation}) {
   function renderCategoryItem(itemData) {
 
     function pressHandler(){
-        navigation.navigate('Details of food');
+        navigation.navigate('Details of food', {
+          categoryId: itemData.item.id,
+        });
     }
 
 
