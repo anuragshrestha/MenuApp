@@ -1,23 +1,54 @@
+import { Text, View, StyleSheet, FlatList } from "react-native";
+import { MEALS ,CATEGORIES} from "../data/dummy-data";
+import MealItem from "../components/MealItem";
+import { useLayoutEffect } from "react";
 
-import { Text, View, StyleSheet } from "react-native";
-import { MEALS } from "../data/dummy-data";
+function MealsOverViewScreens({ route, navigation}) {
+  const catId = route.params.categoryId;
 
+  const displayedMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
 
- function MealsOverViewScreens({route}){
+  useLayoutEffect(() => {
+      const categoriesTitle = CATEGORIES.find((category) => category.id == catId).title;
 
-    const catId = route.params.categoryId;
-
-
-    return(
-        <Text>Meals OverView screen! {catId}</Text>
-    )
- }
-
-
- const style = StyleSheet.create({
-    conatiner:{
-        flex: 1,
-    }
- })
+      navigation.setOptions({
+        title: categoriesTitle,
+      });
+  }, [catId, navigation]);
    
- export default MealsOverViewScreens;
+
+  function renderMealItem(itemData) {
+
+  
+
+    const item = itemData.item;
+
+    const itemProps = {
+      id: item.id,
+      title: item.title,
+      imageUrl: item.imageUrl,
+      affordability: item.affordability,
+      complexity: item.complexity,
+      duration: item.duration,
+    }
+    return <MealItem {...itemProps} />
+  }
+
+  return (
+    <FlatList
+      data={displayedMeals}
+      keyExtractor={(item) => item.id}
+      renderItem={renderMealItem}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  conatiner: {
+    flex: 1,
+  },
+});
+
+export default MealsOverViewScreens;
