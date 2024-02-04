@@ -1,8 +1,8 @@
 import CategoryGridTile from "../components/CategoryGridTile";
 import { CATEGORIES } from "../data/dummy-data";
 import { FlatList } from "react-native";
-
-
+import { useLayoutEffect } from "react";
+import IconButton from "../components/IconButton";
 
 function CategoriesScreen({navigation}) {
 
@@ -20,6 +20,13 @@ function CategoriesScreen({navigation}) {
     );
   }
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <IconButton icon="home"  color='blue' />
+      }
+    })
+  })
 
   return (
     <FlatList

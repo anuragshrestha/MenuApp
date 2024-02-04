@@ -1,7 +1,10 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { Text, View, StyleSheet, FlatList,Button } from "react-native";
 import { MEALS ,CATEGORIES} from "../data/dummy-data";
 import MealItem from "../components/MealItem";
+//import { useLayoutEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
+import IconButton from "../components/IconButton";
 
 function MealsOverViewScreens({ route, navigation}) {
   const catId = route.params.categoryId;
@@ -10,11 +13,19 @@ function MealsOverViewScreens({ route, navigation}) {
     return mealItem.categoryIds.indexOf(catId) >= 0;
   });
 
+  function headerButton(){
+    console.log('hello');
+  }
+
+
   useLayoutEffect(() => {
       const categoriesTitle = CATEGORIES.find((category) => category.id == catId).title;
 
       navigation.setOptions({
         title: categoriesTitle,
+        headerRight: () => {
+        return <IconButton  icon='card' color='white'  pressed={headerButton}/>
+        }
       });
   }, [catId, navigation]);
    
