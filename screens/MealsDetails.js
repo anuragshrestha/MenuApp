@@ -1,23 +1,45 @@
-import { View, Text, Image, StyleSheet, ScrollView,Button } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Button,
+} from "react-native";
 import { MEALS } from "../data/dummy-data";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import List from "./List";
 import IconButton from "../components/IconButton";
+import { FavoritesContext } from "../store/context/favorite-context";
 
 function MealsDetails({ route, navigation }) {
   const id = route.params.mealId;
 
-   function headerButton(){
-    console.log('pressed');
-   }
+  const favoriteMealContext = useContext(FavoritesContext);
 
-   useLayoutEffect(() =>{
+  const mealsFav = favoriteMealContext.ids.includes(id);
+
+  function headerButton() {
+    if (mealsFav) {
+      favoriteMealContext.removeFavorite(id);
+    } else {
+      favoriteMealContext.addFavorite(id);
+    }
+  }
+
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  <IconButton  icon='star' color='white'  pressed={headerButton}/>
-      }
-    })
-   })
+        return (
+          <IconButton
+            icon={mealsFav ? "star" : "star-outline"}
+            color="white"
+            pressed={headerButton}
+          />
+        );
+      },
+    });
+  });
 
   const displayedMeal = MEALS.find((meal) => meal.id == id);
 
@@ -33,18 +55,18 @@ function MealsDetails({ route, navigation }) {
         </View>
       </View>
 
-     <View style = {styles.content}>
-     <View style={styles.width}>
-        <View style={styles.border}>
-          <Text style={styles.ingredients}>Ingredients Needed</Text>
+      <View style={styles.content}>
+        <View style={styles.width}>
+          <View style={styles.border}>
+            <Text style={styles.ingredients}>Ingredients Needed</Text>
+          </View>
+          <List data={displayedMeal.ingredients} />
+          <View style={styles.border}>
+            <Text style={styles.ingredients}>Steps to Cook</Text>
+          </View>
+          <List data={displayedMeal.steps} />
         </View>
-        <List data={displayedMeal.ingredients} />
-        <View style={styles.border}>
-          <Text style={styles.ingredients}>Steps to Cook</Text>
-        </View>
-        <List data={displayedMeal.steps} />
       </View>
-     </View>
     </ScrollView>
   );
 }
@@ -108,9 +130,9 @@ const styles = StyleSheet.create({
   width: {
     maxWidth: "80%",
   },
-  content:{
-    alignItems: 'center'
-  }
+  content: {
+    alignItems: "center",
+  },
 });
 
 export default MealsDetails;
