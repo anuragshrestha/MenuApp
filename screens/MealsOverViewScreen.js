@@ -5,6 +5,7 @@ import MealItem from "../components/MealItem";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import IconButton from "../components/IconButton";
+import MealList from "../components/MealList/MealList";
 
 function MealsOverViewScreens({ route, navigation}) {
   const catId = route.params.categoryId;
@@ -30,30 +31,7 @@ function MealsOverViewScreens({ route, navigation}) {
   }, [catId, navigation]);
    
 
-  function renderMealItem(itemData) {
-
-  
-
-    const item = itemData.item;
-
-    const itemProps = {
-      id: item.id,
-      title: item.title,
-      imageUrl: item.imageUrl,
-      affordability: item.affordability,
-      complexity: item.complexity,
-      duration: item.duration,
-    }
-    return <MealItem {...itemProps} />
-  }
-
-  return (
-    <FlatList
-      data={displayedMeals}
-      keyExtractor={(item) => item.id}
-      renderItem={renderMealItem}
-    />
-  );
+    return <MealList item={displayedMeals}/>
 }
 
 const styles = StyleSheet.create({
